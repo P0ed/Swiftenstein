@@ -21,7 +21,7 @@ class Player: Actor, Killable, Armed, Switcher {
     var eyeline = 0.5
     var position: Vector
     var direction: Vector
-    var health: Double = 100
+    var health: Float = 100
 
     var bobPhase = 0.0
     let bobScale = 0.025
@@ -64,7 +64,7 @@ class Player: Actor, Killable, Armed, Switcher {
     }
 
     func stagger() {
-        delegate?.playerWasHurt(self)
+		world.overlay.r = 200
     }
 
     func die() {
@@ -72,17 +72,20 @@ class Player: Actor, Killable, Armed, Switcher {
         delegate?.playerWasKilled(self)
     }
 
-    func shoot() {
+    func shoot() -> Bool {
         let ammoType = weapon.type?.ammoType
         if let ammoType = ammoType {
             if let ammoCount = ammo[ammoType], ammoCount > 0 {
+				ammo[ammoType] = ammoCount - 1
                 weapon.fire()
-                ammo[ammoType] = ammoCount - 1
+				return true
             } else {
-                weapon.type = weapons.first { $0.ammoType.map { ammo[$0] ?? 0 > 0 } ?? true }
+                weapon.type = weapons.first { $0.ammoType.map { ammo[$0] ?? 0 > 0 } ?? false }
+				return false
             }
         } else {
             weapon.fire()
+			return true
         }
     }
 
@@ -119,6 +122,7 @@ class Player: Actor, Killable, Armed, Switcher {
             weapon.type = weapons.first { $0.ammoType.map { ammo[$0] ?? 0 > 0 } ?? true }
         }
         delegate?.playerPoweredUp(self)
+		world.overlay.g = 200
     }
 
     func didActivateSwitch(_: Switch) {

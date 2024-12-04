@@ -170,43 +170,16 @@ final class ViewController: NSViewController {
 
 extension ViewController: PlayerDelegate {
 
-	func playerPoweredUp(_: Player) {
-		blink(color: .green)
-	}
-
-	func playerWasHurt(_: Player) {
-		blink(color: .red)
-	}
+	func playerPoweredUp(_: Player) {}
+	func playerWasHurt(_: Player) {}
 
 	func playerWasKilled(_: Player) {
 		if levelComplete { return }
-        
-		blink(color: .red) {
-			self.blink(color: .red, from: 0, to: 1, duration: 2) {
-				self.gameOver = true
-			}
-		}
+		gameOver = true
 	}
 
 	func playerDidEndLevel(_: Player) {
 		levelComplete = true
-		blink(color: .white) {
-			self.blink(color: .white, from: 0, to: 1, duration: 2) {
-				self.gameOver = true
-				self.levelComplete = true
-			}
-		}
-	}
-
-	private func blink(color: NSColor,  from: TimeInterval = 0.5, to: TimeInterval = 0, duration: TimeInterval = 0.5, completion: @escaping () -> Void = {}) {
-		overlay.alphaValue = from
-		overlay.layer?.backgroundColor = color.cgColor
-		NSAnimationContext.runAnimationGroup { ctx in
-			ctx.duration = duration
-			ctx.allowsImplicitAnimation = true
-			self.overlay.animator().alphaValue = to
-		} completionHandler: {
-			completion()
-		}
+		gameOver = true
 	}
 }

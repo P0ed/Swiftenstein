@@ -96,7 +96,7 @@ class PushWall: Trigger {
             return
         }
         let oldPos = position
-        position += direction * dt * 0.2
+        position += direction * dt * 0.32
         if direction.x < 0 || direction.y < 0 {
             guard case .floor = world.map[Int(position.x), Int(position.y)] else {
                 position = oldPos

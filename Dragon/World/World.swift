@@ -1,18 +1,14 @@
-//
-//  World.swift
-//
-//  Created by Nick Lockwood on 23/04/2019.
-//  Copyright © 2019 Nick Lockwood. All rights reserved.
-//
-
 import Foundation
 
-class World {
+func clamp(_ value: Float) -> Float { min(max(value, 0), 1) }
+
+final class World {
     var map: Map
     var player: Player!
     var entities: [Entity] = []
     var partitions: [Partition] = []
     var time: TimeInterval = 0
+	var overlay = Color(r: 0, g: 0, b: 0, a: 0)
 
     init(map: Map) {
         self.map = map
@@ -78,6 +74,9 @@ class World {
         for case let movable as Movable in entities {
             _ = movable.avoidWalls()
         }
+
+		overlay.r -= min(overlay.r, 8)
+		overlay.g -= min(overlay.g, 8)
     }
 
     func hitTest(_ ray: Ray) -> (Double, Entity?) {

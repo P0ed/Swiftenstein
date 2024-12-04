@@ -11,7 +11,7 @@ protocol Armed: Actor {
     var lastFired: TimeInterval { get set }
     var weaponType: WeaponType? { get }
 
-    func shoot()
+    func shoot() -> Bool
 }
 
 extension Armed {
@@ -23,36 +23,35 @@ extension Armed {
     }
 
     func fire() {
-        guard canFire, let weaponType = weaponType else {
-            return
-        }
-        shoot()
+        guard canFire, let weaponType, shoot() else { return }
         lastFired = world.time
         let spread = Double.random(in: -weaponType.spread ... weaponType.spread)
-        let direction = self.direction.rotated(by: spread)
+        let direction = direction.rotated(by: spread)
         let (distance, entity) = world.hitTest(Ray(
             origin: position,
             direction: direction
         ))
 
+		let efDistance = min(distance, weaponType.distance ?? distance)
+
 		if let impact = weaponType.impact {
 			var explosion: Explosion!
-			func cleanup() {
-				explosion.world.remove(explosion)
-			}
 			explosion = Explosion(
 				world: world,
-				position: position + direction * (distance - 0.02),
-				animation: impact.then(cleanup)
+				position: position + direction * (efDistance - 0.02),
+				animation: impact.then { explosion.world.remove(explosion) }
 			)
 			world.entities.append(explosion)
 		}
-        if let killable = entity as? Killable {
-            killable.hurt(weaponType.damage)
-			return
-        }
-        if let movable = entity as? Movable {
-            movable.position += direction * 0.02 / movable.mass
-        }
+
+		if distance == efDistance {
+			if let killable = entity as? Killable {
+				killable.hurt(weaponType.damage)
+				return
+			}
+			if let movable = entity as? Movable {
+				movable.position += direction * 0.02 / movable.mass
+			}
+		}
     }
 }

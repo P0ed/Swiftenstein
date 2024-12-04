@@ -6,7 +6,7 @@
 //
 
 protocol Killable: Entity {
-    var health: Double { get set }
+    var health: Float { get set }
 
     func stagger()
     func die()
@@ -17,7 +17,7 @@ extension Killable {
         return health <= 0
     }
 
-    func hurt(_ damage: Double) {
+    func hurt(_ damage: Float) {
         guard !isDead else {
             return
         }

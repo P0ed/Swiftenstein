@@ -234,6 +234,8 @@ extension World {
                 }
             }
         }
-        return framebuffer
+		framebuffer.modify { [overlay] _, _, px in px.add(overlay) }
+        
+		return framebuffer
     }
 }

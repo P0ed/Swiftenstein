@@ -5,10 +5,11 @@
 //  Copyright © 2019 Nick Lockwood. All rights reserved.
 //
 
-class Scenery: Movable, Sprite {
+class Scenery: Movable, Killable, Sprite {
     var position: Vector
     var radius: Double
     var mass: Double
+	var health: Float = 200
     var texture: Int?
 
     unowned var world: World
@@ -20,4 +21,9 @@ class Scenery: Movable, Sprite {
         self.mass = mass
         self.texture = texture
     }
+
+	func stagger() {}
+	func die() {
+		world.remove(self)
+	}
 }

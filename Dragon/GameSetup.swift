@@ -145,16 +145,17 @@ extension WeaponType {
 		idle: Animation(duration: 0, mode: .clamp, frames: [46]),
 		firing: Animation(duration: 0.5, mode: .clamp, frames: [47, 48]),
 		impact: .puff,
-		cooldown: 0.8,
-		damage: 50,
-		spread: 0.09
+		cooldown: 0.24,
+		damage: 40,
+		spread: 0.09,
+		distance: 2.5
 	)
 }
 
 // MARK: Set up pickups
 
 extension PickupType {
-	static let bng = PickupType(texture: 46, weapon: .bng, ammo: [.weed: 420])
+	static let bng = PickupType(texture: 48, weapon: .bng, ammo: [.weed: 420])
 	static let smg = PickupType(texture: 35, weapon: .smg, ammo: [.pistol: 90])
     static let smgAmmo = PickupType(texture: 36, ammo: [.weed: 30])
     static let pistolAmmo = PickupType(texture: 37, ammo: [.pistol: 50])

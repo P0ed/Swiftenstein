@@ -20,6 +20,13 @@ public struct Color: Equatable {
             b: UInt8(Double(b) * brightness)
         )
     }
+
+	mutating func add(_ color: Color) {
+		a += min(color.a, .max - a)
+		r += min(color.r, .max - r)
+		g += min(color.g, .max - g)
+		b += min(color.b, .max - b)
+	}
 }
 
 public struct Bitmap {
@@ -27,8 +34,8 @@ public struct Bitmap {
     public let width, height: Int
 
     subscript(x: Int, y: Int) -> Color {
-        get { pixels[pixels.startIndex + x * height + y] }
-        set { pixels[pixels.startIndex + x * height + y] = newValue }
+        get { pixels[x * height + y] }
+        set { pixels[x * height + y] = newValue }
     }
 
     subscript(v: Vector) -> Color {
@@ -49,6 +56,14 @@ public struct Bitmap {
         self.height = height
         pixels = Array(repeating: color, count: width * height)
     }
+
+	mutating func modify(_ f: (Int, Int, inout Color) -> Void) {
+		for x in 0..<width {
+			for y in 0..<height {
+				f(x, y, &self[x, y])
+			}
+		}
+	}
 }
 
 private extension Int {

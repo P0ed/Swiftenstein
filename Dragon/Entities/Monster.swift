@@ -32,7 +32,7 @@ class Monster: Actor, Killable, Armed, Sprite, Animated {
     let type: MonsterType
     var position: Vector
     var direction: Vector
-    var health: Double = 50
+	var health: Float = 50
     var animationTime: TimeInterval = 0
     var lastKnownPlayerPosition: Vector?
 
@@ -93,8 +93,9 @@ class Monster: Actor, Killable, Armed, Sprite, Animated {
         state = .dead
     }
 
-    func shoot() {
-        animation = .guardShoot
+	func shoot() -> Bool {
+		animation = type.shooting
+		return true
     }
 
     init(type: MonsterType, world: World, position: Vector) {

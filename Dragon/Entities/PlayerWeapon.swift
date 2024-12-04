@@ -19,8 +19,9 @@ struct WeaponType: Equatable {
     var firing: Animation?
     var impact: Animation?
     var cooldown: TimeInterval
-    var damage: Double
+    var damage: Float
     var spread: Double
+	var distance: Double?
 
     static func == (lhs: WeaponType, rhs: WeaponType) -> Bool {
         return lhs.uuid == rhs.uuid

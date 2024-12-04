@@ -9,12 +9,12 @@ import Foundation
 
 struct PickupType {
     let texture: Int
-    let health: Double
+	let health: Float
     let weapon: WeaponType?
     let ammo: [AmmoType: Int]
 
     init(texture: Int,
-         health: Double = 0,
+         health: Float = 0,
          weapon: WeaponType? = nil,
          ammo: [AmmoType: Int] = [:]) {
         self.texture = texture
